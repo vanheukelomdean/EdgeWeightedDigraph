@@ -5,11 +5,10 @@
 
 class Edge
 {
-	private: 
+	public:
 		Vertex* tail;
 		Vertex* head;
 		int weight;
-public:
-	Edge(Vertex* tail, Vertex* head, int weight);
+		Edge(Vertex* tail, Vertex* head, int weight);
 };
 

@@ -2,9 +2,8 @@
 
 class Vertex
 {
-	private:
-		int id;
 	public:
+		int id;
 		Vertex(int id);
 };
 

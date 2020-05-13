@@ -8,11 +8,13 @@
 #include "Edge.h"
 #include "Vertex.h"
 
-#define FILE "graph.txt"
+#define FILE "tinyEWG.txt"
 
 void addEdge(std::set<Edge*>& edges, Vertex* t, Vertex* h, int weight);
 Vertex* addVertex(std::set<Vertex*>& vertices, int id);
 void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges);
+
+inline bool operator==(const Vertex& l, const Vertex& r) { return l.id == r.id; }
 
 int main()
 {
@@ -21,6 +23,7 @@ int main()
 
 	FileReader(vertices, edges);
 
+	std::cout << "Read " << vertices.size() << " vertices and " << edges.size() << " edges";
 }
 
 void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges) {
@@ -31,11 +34,15 @@ void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges) {
 
 	fileStream.open(FILE);
 
+	//do not need vertex count or edge count
+	std::getline(fileStream, line);
+	std::getline(fileStream, line);
+
 	if (fileStream.is_open()) {
 		while (std::getline(fileStream, line)) {
 			std::istringstream ss(line);
 
-			if (!(ss >> tail >> head >> weight)) {
+			if (ss >> tail >> head >> weight) {
 				t = addVertex(vertices, tail);
 				h = addVertex(vertices, head);
 				addEdge(edges, t, h, weight);
@@ -45,24 +52,31 @@ void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges) {
 }
 
 void addEdge(std::set<Edge*>& edges, Vertex* t, Vertex* h, int weight) {
-	std::pair<std::set<Edge*>::iterator, bool> p;
-	Edge* e;
+	std::set<Edge*>::iterator e;
+	bool in = false;
 
-	e = new Edge(t, h, weight);
-	p = edges.insert(e);
-	if (!p.second) {
-		delete e;
+	for (e = edges.begin(); !in && e != edges.end(); ++e) {
+		in = (*t == *(*e)->tail) && (*h == *(*e)->head);
+	}
+	if (!in) {
+		Edge* edge = new Edge(t, h, weight);
+		edges.insert(edge);
 	}
 }
 
 Vertex* addVertex(std::set<Vertex*>& vertices, int id) {
-	std::pair<std::set<Vertex*>::iterator, bool> p;
-	Vertex* v;
+	std::set<Vertex*>::iterator v;
+	bool in = false;
 
-	v = new Vertex(id);
-	p = vertices.insert(v);
-	if (!p.second) {
-		delete v;
+	for (v = vertices.begin(); !in && v != vertices.end(); ++v) {
+		if ((*v)->id == id) {
+			return *v;
+		}
 	}
-	return *(p.first);
+	Vertex* vert = new Vertex(id);
+	vertices.insert(vert);
+	return vert;
+
 }
+
+
