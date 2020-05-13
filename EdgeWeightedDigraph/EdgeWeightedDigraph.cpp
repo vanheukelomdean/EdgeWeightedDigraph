@@ -1,20 +1,68 @@
-// EdgeWeightedDigraph.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <set>
+#include <list>
+#include <algorithm>
 #include <iostream>
+#include "Edge.h"
+#include "Vertex.h"
+
+#define FILE "graph.txt"
+
+void addEdge(std::set<Edge*>& edges, Vertex* t, Vertex* h, int weight);
+Vertex* addVertex(std::set<Vertex*>& vertices, int id);
+void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	std::set<Vertex*> vertices;
+	std::set<Edge*> edges;
+
+	FileReader(vertices, edges);
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void FileReader(std::set<Vertex*>& vertices, std::set<Edge*>& edges) {
+	std::ifstream fileStream;
+	std::string line;
+	int tail, head, weight;
+	Vertex *h, *t;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	fileStream.open(FILE);
+
+	if (fileStream.is_open()) {
+		while (std::getline(fileStream, line)) {
+			std::istringstream ss(line);
+
+			if (!(ss >> tail >> head >> weight)) {
+				t = addVertex(vertices, tail);
+				h = addVertex(vertices, head);
+				addEdge(edges, t, h, weight);
+			}
+		}
+	}
+}
+
+void addEdge(std::set<Edge*>& edges, Vertex* t, Vertex* h, int weight) {
+	std::pair<std::set<Edge*>::iterator, bool> p;
+	Edge* e;
+
+	e = new Edge(t, h, weight);
+	p = edges.insert(e);
+	if (!p.second) {
+		delete e;
+	}
+}
+
+Vertex* addVertex(std::set<Vertex*>& vertices, int id) {
+	std::pair<std::set<Vertex*>::iterator, bool> p;
+	Vertex* v;
+
+	v = new Vertex(id);
+	p = vertices.insert(v);
+	if (!p.second) {
+		delete v;
+	}
+	return *(p.first);
+}
