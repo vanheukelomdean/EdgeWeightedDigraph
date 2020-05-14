@@ -147,12 +147,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EagerPrim.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="EdgeWeightedDigraph.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EagerPrim.h" />
     <ClInclude Include="Edge.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

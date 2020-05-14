@@ -8,7 +8,7 @@ class Edge
 	public:
 		Vertex* tail;
 		Vertex* head;
-		int weight;
-		Edge(Vertex* tail, Vertex* head, int weight);
+		float weight;
+		Edge(Vertex* tail, Vertex* head, float weight);
 };
 
