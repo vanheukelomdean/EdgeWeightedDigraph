@@ -10,7 +10,7 @@ inline bool operator==(const Vertex& l, const Vertex& r) { return l.id == r.id; 
 Graph::Graph(std::string fileName) {
 	this->fileName = fileName;
 	FileReader();
-	std::cout << "Read " << vertices.size() << " vertices and " << edges.size() << " edges";
+	std::cout << "Read " << vertices.size() << " vertices and " << edges.size() << " edges \n";
 }
 
 Vertex* Graph::GetRandomVertex() {

@@ -11,15 +11,20 @@
 class EagerPrim
 {
 private:
-	std::set<Vertex*>* vertices;
-	std::set<Edge*>* edges;
+	Graph* EWG;
 	std::set<Vertex*> leaves;
 	std::set<Edge*> branches;
-	std::priority_queue<Edge*> branchPQ;
-	std::unordered_map<Vertex*, float> distance;
+	std::priority_queue <Edge*> branchPQ;
+	std::unordered_map<Vertex*, float> distanceTo;
 
-	void visit();
+	//Add a node to the MST
+	void visit(Vertex* v);
+
+	inline bool inTree(Vertex* v);
+	inline bool inTree(Edge* e);
+
+	void debug();
 public:
-	EagerPrim(Graph& EWG);
+	EagerPrim(Graph* EWG);
 };
 

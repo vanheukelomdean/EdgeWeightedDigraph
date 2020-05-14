@@ -10,5 +10,6 @@ class Edge
 		Vertex* head;
 		float weight;
 		Edge(Vertex* tail, Vertex* head, float weight);
+		Vertex* other(Vertex* v);
 };
 
