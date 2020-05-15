@@ -3,6 +3,7 @@
 #include <sstream>
 #include <list>
 #include <algorithm>
+#include <ctime>
 #include <iostream>
 
 inline bool operator==(const Vertex& l, const Vertex& r) { return l.id == r.id; }
@@ -15,7 +16,9 @@ Graph::Graph(std::string fileName) {
 
 Vertex* Graph::GetRandomVertex() {
 	std::set<Vertex*>::iterator v = this->vertices.begin();
-	std::advance(v, (std::rand() % this->VertexCount()));
+	srand(static_cast<unsigned int>(time(0)));
+	int random = std::rand() % this->VertexCount();
+	std::advance(v, random);
 	return *v;
 }
 

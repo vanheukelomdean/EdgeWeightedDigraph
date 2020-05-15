@@ -7,24 +7,19 @@ inline bool operator==(const Vertex& l, const Vertex& r) { return l.id == r.id; 
 inline bool operator==(const Edge& l, const Edge& r) {
 	return l.tail == r.tail && l.head == r.head;
 }
-//vertex
-inline bool operator<(const Edge& l, const Edge& r)
-{
-	return l.weight < r.weight;
-}
+
 inline bool EagerPrim::inTree(Vertex* v) { return this->leaves.find(v) != this->leaves.end(); }
 inline bool EagerPrim::inTree(Edge* e) { return this->branches.find(e) != this->branches.end(); }
 
 EagerPrim::EagerPrim(Graph* EWG) {
 	//initialize data structures
-	Edge* edge;
 	Vertex *node;
 	node = EWG->GetRandomVertex();
 	this->EWG = EWG;
 	this->leaves = { node };
 	this->branches = {};
 	this->branchPQ = {};
-	this->branchPQ.push(new Edge(nullptr, node, 0.00f));
+	this->branchPQ.push({ node, 0.00f });
 	
 	std::set<Vertex*>* vertices = EWG->GetAllVertices();
 	for (auto it = (*vertices).begin(); it != (*vertices).end(); ++it) {
@@ -33,20 +28,15 @@ EagerPrim::EagerPrim(Graph* EWG) {
 
 	this->distanceTo[node] = 0.0f;
 
-	visit(branchPQ.top()->head);
-	branchPQ.pop();
+	//visit(branchPQ.top().first);
+	//branchPQ.pop();
+
 	while (branchPQ.size() > 0) {
 		debug();
-		edge = this->branchPQ.top();
+		node  = this->branchPQ.top().first;
 		this->branchPQ.pop();
-		if (!inTree(edge->head))
-		{
-			visit(edge->head);
-		}
-		else if (!inTree(edge->tail))
-		{
-			visit(edge->tail);
-		}
+		
+		visit(node);
 	}
 
 	float distance = 0.0f;
@@ -72,7 +62,7 @@ void EagerPrim::visit(Vertex* v) {
 				//shortest edge to node next
 				this->branches.insert(*e);
 				this->distanceTo[next] = (*e)->weight;
-				this->branchPQ.push(*e);
+				this->branchPQ.push({ next, (*e)->weight });
 			}
 		}
 	}
@@ -92,6 +82,10 @@ void EagerPrim::debug() {
 	std::cout << "\n";
 
 	//std::cout << "PQ Top: " << "{" << (this->branchPQ.top())->tail->id << ", " << (this->branchPQ.top())->head->id << ", " << (this->branchPQ.top())->weight << "}, ";
+	//std::cout << "\n";
+}
 
-	std::cout << "\n";
+
+bool PQComparator::operator()(weightTo n1, weightTo n2) {
+	return n1.second > n2.second;
 }

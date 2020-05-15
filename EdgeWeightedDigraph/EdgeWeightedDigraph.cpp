@@ -7,7 +7,9 @@ int main()
 {
 	Graph* EWG = new Graph(FILE);
 
-	new EagerPrim(EWG);
+	EagerPrim* EP = new EagerPrim(EWG);
+
+	delete EP;
 
 	delete EWG;
 }
